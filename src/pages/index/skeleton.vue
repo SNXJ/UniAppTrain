@@ -6,9 +6,7 @@
           <swiper></swiper>
           <view class="indicator XtxSwiper--indicator">
             <text class="dot XtxSwiper--dot"></text>
-            <text class="dot XtxSwiper--dot"></text>
             <text class="dot XtxSwiper--dot active XtxSwiper--active"></text>
-            <text class="dot XtxSwiper--dot"></text>
             <text class="dot XtxSwiper--dot"></text>
           </view>
         </view>

@@ -10,6 +10,7 @@ import XtxGuess from '@/components/XtxGuess.vue' //easycom 未生效 temp
 import { onLoad } from '@dcloudio/uni-app'
 import { ref } from 'vue'
 import { useGuessList } from '@/composables'
+import type { XtxGuessInstance } from '@/types/component'
 const isLoad = ref(false)
 //
 const bannerList = ref<BannerItem[]>([])
@@ -28,18 +29,27 @@ const getHotData = async () => {
   hotList.value = res.result
 }
 const isTriggered = ref(false)
-const { guessRef, onScrolltolower } = useGuessList()
+const { guessRef, onRefreshData, onScrolltolower } = useGuessList()
+
+//ref InstanceType写法  or 上面封装
+// export type XtxGuessInstance = InstanceType<typeof XtxGuess>
+// const guessRef = ref<null | XtxGuessInstance>(null)
+//或
+//const guessRef = ref<XtxGuessInstance>()
+// const onScrolltolower = async () => {
+//   guessRef.value?.getMore()
+// }
 
 const onRefresh = async () => {
   isTriggered.value = true
-  guessRef.value?.resetData()
-  await Promise.all([getBannerData(), getCategoryData(), getHotData(), guessRef.value?.getMore()])
+  // guessRef.value?.resetData()
+  await Promise.all([getBannerData(), getCategoryData(), getHotData(), onRefreshData()])
   isTriggered.value = false
 }
 
 onLoad(async () => {
   isLoad.value = true
-  await Promise.all([getBannerData(), getCategoryData(), getHotData(), guessRef.value?.getMore()])
+  await Promise.all([getBannerData(), getCategoryData(), getHotData(), onRefreshData()])
   isLoad.value = false
 })
 </script>

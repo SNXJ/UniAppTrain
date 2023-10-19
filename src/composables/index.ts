@@ -1,4 +1,4 @@
-import type { XtxGuessInstance } from '@/types/components'
+import type { XtxGuessInstance } from '@/types/component'
 import { ref } from 'vue'
 
 /**
@@ -12,10 +12,16 @@ export const useGuessList = () => {
   const onScrolltolower = () => {
     guessRef.value?.getMore()
   }
+  //刷新数据
+  const onRefreshData = () => {
+    guessRef.value?.resetData()
+    guessRef.value?.getMore()
+  }
 
   // 返回 ref 和事件处理函数
   return {
     guessRef,
+    onRefreshData,
     onScrolltolower,
   }
 }

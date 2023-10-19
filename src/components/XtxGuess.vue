@@ -54,7 +54,12 @@ defineExpose({
     <text class="text">猜你喜欢</text>
   </view>
   <view class="guess">
-    <navigator class="guess-item" v-for="item in guessList" :key="item.id" :url="`/pages/goods/goods?id=${item.id}`">
+    <navigator
+      class="guess-item"
+      v-for="item in guessList"
+      :key="item.id"
+      :url="`/pages/goods/goods?id=${item.id}`"
+    >
       <image class="image" mode="aspectFill" :src="item.picture"></image>
       <view class="name"> {{ item.name }} </view>
       <view class="price">
@@ -151,4 +156,5 @@ defineExpose({
   font-size: 28rpx;
   color: #666;
   padding: 20rpx 0;
-}</style>
+}
+</style>
