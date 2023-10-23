@@ -20,6 +20,8 @@
 		{
 			"path": "pages/my/my",
 			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTextStyle": "white",
 				"navigationBarTitleText": "我的"
 			}
 		},
@@ -52,6 +54,26 @@
 			"style": {
 				"navigationBarTitleText": "商品详情"
 			}
+		}
+	],
+	"subPackages": [
+		{
+			"root": "pagesMember",
+			"pages": [
+				{
+					"path": "settings/settings",
+					"style": {
+						"navigationBarTitleText": "设置"
+					}
+				},
+        {
+					"path": "profile/profile",
+					"style": {
+            "navigationStyle": "custom",
+						"navigationBarTitleText": "个人信息"
+					}
+				}
+			]
 		}
 	],
 	"globalStyle": {
