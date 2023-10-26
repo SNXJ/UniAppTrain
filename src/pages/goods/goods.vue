@@ -7,10 +7,11 @@ import type {
 import { postMemberCartAPI } from '@/services/cart'
 import { getGoodsByIdAPI } from '@/services/goods'
 import type { GoodsResult } from '@/types/goods'
-import { onLoad } from '@dcloudio/uni-app'
+import { onLoad, onShow } from '@dcloudio/uni-app'
 import { computed, ref } from 'vue'
 import AddressPanel from './components/AddressPanel.vue'
 import ServicePanel from './components/ServicePanel.vue'
+import type { AddressItem, AddressParams } from '@/types/address'
 
 // 获取屏幕边界到安全区域距离
 const { safeAreaInsets } = uni.getSystemInfoSync()
@@ -103,6 +104,7 @@ const openSkuPopup = (val: SkuMode) => {
 }
 // SKU组件实例
 const skuPopupRef = ref<SkuPopupInstance>()
+const addressSelectRef = ref<AddressItem>()
 // 计算被选中的值
 const selectArrText = computed(() => {
   return skuPopupRef.value?.selectArr?.join(' ').trim() || '请选择商品规格'
@@ -117,6 +119,61 @@ const onAddCart = async (ev: SkuPopupEvent) => {
 const onBuyNow = (ev: SkuPopupEvent) => {
   uni.navigateTo({ url: `/pagesOrder/create/create?skuId=${ev._id}&count=${ev.buy_num}` })
 }
+//本地模拟地址选择--------start----------
+const addressList = ref<AddressItem[]>([])
+const addressData = () => {
+  var addressParams: AddressItem = {
+    address: '北京市顺义区后沙峪地区安平北街6号院',
+    receiver: '张三',
+    contact: '13812345678',
+    provinceCode: '1000',
+    cityCode: '1100',
+    countyCode: '1110',
+    isDefault: 1,
+    id: '0',
+    fullLocation: '0001北京市顺义区后沙峪地区安平北街6号院',
+  }
+  var addressParams2: AddressItem = {
+    address: '上海市顺义区后沙峪地区安平北街6号院',
+    receiver: '李四',
+    contact: '15612345678',
+    provinceCode: '2000',
+    cityCode: '2200',
+    countyCode: '2220',
+    isDefault: 0,
+    id: '2',
+    fullLocation: '0002上海市顺义区后沙峪地区安平北街6号院',
+  }
+  var addressParams3: AddressItem = {
+    address: '广州顺义区后沙峪地区安平北街6号院',
+    receiver: '王五',
+    contact: '15612345678',
+    provinceCode: '2000',
+    cityCode: '2200',
+    countyCode: '2220',
+    isDefault: 0,
+    id: '3',
+    fullLocation: '0003广州顺义区后沙峪地区安平北街6号院',
+  }
+  addressList.value?.push(addressParams)
+  addressList.value?.push(addressParams2)
+  addressList.value?.push(addressParams3)
+}
+onShow(() => {
+  addressData()
+})
+const selectAddr = computed(() => {
+  return addressSelectRef.value?.fullLocation || '请选择收货地址'
+})
+
+const addressResult = (addressItem: AddressItem) => {
+  addressList.value.map((item) => {
+    item.isDefault = item.id == addressItem.id ? 1 : 0
+    return item
+  })
+  return (addressSelectRef.value = addressItem)
+}
+//本地模拟地址选择------end------------
 </script>
 
 <template>
@@ -171,7 +228,7 @@ const onBuyNow = (ev: SkuPopupEvent) => {
         </view>
         <view @tap="openPopup('address')" class="item arrow">
           <text class="label">送至</text>
-          <text class="text ellipsis"> 请选择收获地址 </text>
+          <text class="text ellipsis">{{ selectAddr }}</text>
         </view>
         <view @tap="openPopup('service')" class="item arrow">
           <text class="label">服务</text>
@@ -249,7 +306,12 @@ const onBuyNow = (ev: SkuPopupEvent) => {
 
   <!-- uni-ui 弹出层 -->
   <uni-popup ref="popup" type="bottom" background-color="#fff">
-    <AddressPanel v-if="popupName === 'address'" @close="popup?.close()" />
+    <AddressPanel
+      :addressList="addressList!"
+      v-if="popupName === 'address'"
+      @close="popup?.close()"
+      @click-item="addressResult"
+    />
     <ServicePanel v-if="popupName === 'service'" @close="popup?.close()" />
   </uni-popup>
 </template>

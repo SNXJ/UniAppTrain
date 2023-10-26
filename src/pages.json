@@ -92,6 +92,17 @@
 					}
 				}
 			]
+		},
+    {
+			"root": "pagesOrder",
+			"pages": [
+				{
+					"path": "create/create",
+					"style": {
+						"navigationBarTitleText": "确认订单"
+					}
+				}
+			]
 		}
 	],
 	"globalStyle": {
