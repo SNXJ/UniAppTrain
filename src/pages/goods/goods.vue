@@ -160,7 +160,9 @@ const addressData = () => {
   addressList.value?.push(addressParams3)
 }
 onShow(() => {
-  addressData()
+  if (addressList.value.length <= 0) {
+    addressData()
+  }
 })
 const selectAddr = computed(() => {
   return addressSelectRef.value?.fullLocation || '请选择收货地址'
