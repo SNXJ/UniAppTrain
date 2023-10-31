@@ -128,7 +128,7 @@ const onOrderPay = async () => {
 
     // #ifdef H5 || APP-PLUS
     // H5端 和 App 端未开通支付-模拟支付体验
-    await getPayMockAPI({ orderId: query.id })
+    await { orderId: query.id }
     // #endif
   }
   // 关闭当前页，再跳转支付结果页
